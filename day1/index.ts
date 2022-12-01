@@ -14,7 +14,19 @@ export function maxTotalCalories(file:string){
     });
 
     
-    return Math.max(...sums);
+    //return Math.max(...sums);  //part 1 output
+
+    
+    //part 2 - very naive solution but it works
+    let max = Math.max(...sums)
+    let sum = max;
+    sums = sums.filter(elem => elem != max);
+    max = Math.max(...sums)
+    sum += max;
+    sums = sums.filter(elem => elem != max);
+    sum += Math.max(...sums)
+    
+    return sum;
 }
 
 console.log(maxTotalCalories('./input.txt'));
