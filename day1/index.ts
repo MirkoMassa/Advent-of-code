@@ -4,8 +4,8 @@ import fs from 'fs';
 
 export function maxTotalCalories(file:string){
 
-    let content:string = fs.readFileSync(file, 'utf-8');
-    let data:number[][] = content.split("\n\n").filter(elem => elem.length!=0).map(elem => elem.split("\r\n\r\n").map(elem => elem.split("\r\n").map(elem => parseInt(elem)))).flat(1);
+    const content:string = fs.readFileSync(file, 'utf-8');
+    const data:number[][] = content.split("\n\n").filter(elem => elem.length!=0).map(elem => elem.split("\r\n\r\n").map(elem => elem.split("\r\n").map(elem => parseInt(elem)))).flat(1);
     let sums:number[] = [];
 
     data.forEach(element => {
