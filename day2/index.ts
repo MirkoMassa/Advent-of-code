@@ -25,6 +25,21 @@ export function rockPaperScissors(file:string):number{
             }
             return false;
         }
+        // functions for part 2
+        opwin(hand: A){
+            for (const elem of this.elements) {
+                if(hand === elem[0]){
+                    return elem[1];
+                }
+            }
+        }
+        oplose(hand: B){
+            for (const elem of this.elements) {
+                if(hand === elem[1]){
+                    return elem[0];
+                }
+            }
+        }
     } 
     type hands = "rock" | "paper" | "scissors";
 
@@ -70,6 +85,34 @@ export function rockPaperScissors(file:string):number{
         else{
             // console.log("perso"); // LOST
             score += points[myhandsval[elem[1]]]
+        }
+    })
+    // return score; // part 1 output
+
+
+    // part 2 // different meaning for XYZ
+
+    let mychoice:hands;
+    score = 0;
+
+    pairs.forEach((elem)=>{
+        if(elem[1] === "X"){ // need to lose, X = 0 points
+            console.log(ophandsval[elem[0]]);
+            console.log("lose, choice: ",mychoice);
+            mychoice = rps.oplose(ophandsval[elem[0]])!;
+            score += points[mychoice];
+        }
+        else if(elem[1] === "Y"){ // need to draw, Y = 3 points
+            console.log(ophandsval[elem[0]]);
+            console.log("draw, choice: ",ophandsval[elem[0]]);
+            score += 3 + points[ophandsval[elem[0]]];
+        }
+        else{ // need to win, Z = 6 points
+            console.log(ophandsval[elem[0]]);
+            console.log("win, choice: ",mychoice);
+            mychoice = rps.opwin(ophandsval[elem[0]])!;
+            score += 6 + points[mychoice];
+
         }
     })
     return score;
