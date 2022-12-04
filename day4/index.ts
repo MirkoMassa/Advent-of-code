@@ -21,23 +21,61 @@ export function campCleanup(file:string): number{
     for (let i = 0; i < data.length; i+=2) { 
         if(data[i].start >= data[i+1].start && data[i].end <= data[i+1].end){
             //if el 1 is containend in el 2
-            console.log("case 1")
-            console.log(data[i])
-            console.log(data[i+1])
+            // console.log("case 1")
+            // console.log(data[i])
+            // console.log(data[i+1])
             overlaps++;
             continue;
         }
         if(data[i+1].start >= data[i].start && data[i+1].end <= data[i].end){
             //if el 2 is containend in el 1
-            console.log("case 2")
-            console.log(data[i])
-            console.log(data[i+1])
+            // console.log("case 2")
+            // console.log(data[i])
+            // console.log(data[i+1])
             overlaps++;
             continue;
         }
     }
 
+    // return overlaps; //part 1 output
+
+    //part 2
+    overlaps = 0;
+
+    //probably did more checks than needed but it worked
+
+    for (let i = 0; i < data.length; i+=2) { 
+        if(data[i].start >= data[i+1].end && data[i].end <= data[i+1].end){
+            // console.log("case 1")
+            // console.log(data[i])
+            // console.log(data[i+1])
+            overlaps++;
+            continue;
+        }
+        if(data[i].start <= data[i+1].end && data[i].end >= data[i+1].end){
+            // console.log("case 2")
+            // console.log(data[i])
+            // console.log(data[i+1])
+            overlaps++;
+            continue;
+        }
+        if(data[i+1].start <= data[i].end && data[i+1].end >= data[i].end){
+            // console.log("case 3")
+            // console.log(data[i])
+            // console.log(data[i+1])
+            overlaps++;
+            continue;
+        }
+        if(data[i+1].start <= data[i].end && data[i+1].end >= data[i].end){
+            // console.log("case 4")
+            // console.log(data[i])
+            // console.log(data[i+1])
+            overlaps++;
+            continue;
+        }
+    }
     return overlaps;
 }
 
+// console.log(campCleanup('./test.txt'));
 console.log(campCleanup('./input.txt'));
