@@ -56,6 +56,11 @@ export function supplyStacks(crates:string, op:string):string{
         // ops[i].startpos+" - "+
         // ops[i].endpos)
     })
+    //creating the string containing top crates from each stack
+    let topcrates:string = "";
+    //part 1 moves
+    /*
+
     for (const operation of ops) {
 
         for (let j = 0; j < operation.moves; j++) {
@@ -63,13 +68,62 @@ export function supplyStacks(crates:string, op:string):string{
         }
     }
     console.log(crateStacks);
-    //creating the string containing top crates from each stack
-    let topcrates:string = "";
+    
     crateStacks.forEach(stack => {
         // idk why concat was not working with pop() so I did this
         topcrates = topcrates+stack.pop()
     });
     
+    // return topcrates; // part 1 output
+    */
+
+    //part 2 solution
+    // console.log(crateStacks)
+    topcrates = "";
+
+    for (const operation of ops) {
+        //if there is just 1 element to move
+        if(operation.moves == 1){
+            crateStacks[operation.endpos].push(crateStacks[operation.startpos].pop()!);
+            continue;
+        }
+        const substack:string[] = [];
+
+        for (let j = 0; j < operation.moves; j++) {
+            substack.push(crateStacks[operation.startpos].pop()!);
+        }
+        for (let j = 0; j < operation.moves; j++) {
+            crateStacks[operation.endpos].push(substack.pop()!);
+        }
+
+    }
+    // *NOT WORKING*
+    // for (const operation of ops) {
+
+    //     //if there is just 1 element to move
+    //     if(operation.moves == 1){
+    //         crateStacks[operation.endpos].push(crateStacks[operation.startpos].pop()!);
+    //         console.log(operation.moves+" ")
+    //         console.log(crateStacks)
+    //         continue;
+    //     }
+    //     //positions of the first element to move in the stack
+    //     const firstcell = crateStacks[operation.startpos].length - operation.moves;
+
+    //     console.log(firstcell)
+    //     crateStacks[operation.endpos].push(...crateStacks[operation.startpos].slice(firstcell))
+    //     for (let i = firstcell; i < operation.moves; i++) {
+    //         crateStacks[operation.startpos].pop();
+    //     }
+    //     console.log(operation.moves+" ")
+    //     console.log(crateStacks)
+    // }
+
+
+
+    crateStacks.forEach(stack => {
+        topcrates = topcrates+stack.pop()
+    });
     return topcrates;
 }
 
