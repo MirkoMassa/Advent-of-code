@@ -23,7 +23,7 @@ class dir {
         this.next = [];
     }
 
-    
+    //returns an array of simpledir from the folder we use it
     allDir(accum:simpledir[] = [{dim: this.localsize, name:this.elem}]):simpledir[]{
 
         for(let nextdir of this.next){
@@ -121,7 +121,7 @@ export function noSpaceLeft(file:string){
     // console.log(JSON.stringify(root,(key, value) => key == "prev" || key == "parent" ? undefined : value ,2));
 
     const dirs = root.allDir();
-    let sum = 0;
+    let sum:number = 0;
 
     dirs.forEach(elem => {
         if(elem.dim<=100000){
@@ -130,6 +130,20 @@ export function noSpaceLeft(file:string){
     });
     
     // return sum; // part 1 output 
+
+    // part 2 very cool solution I'm happy very cool very happy that whole
+    // thing was too hard for me
+
+    const UNUSED_DISKSPACE = 70000000 - root.localsize;
+    const NEEDED_DISKSPACE = 30000000 - UNUSED_DISKSPACE;
+    console.log(NEEDED_DISKSPACE)
+    let smallest:number = Infinity;
+    dirs.forEach(elem => {
+        if(elem.dim < smallest && elem.dim >= NEEDED_DISKSPACE){
+            smallest = elem.dim;
+        }
+    });
+    return smallest;
 }
 
 //console.log(noSpaceLeft('./test.txt'));
