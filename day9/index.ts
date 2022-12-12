@@ -78,8 +78,6 @@ export function rope(file:string){
             steps: parseInt(numsteps)
         }
     });
-    console.log(content);
-    console.log(distance({x:1,y:1}, {x:0,y:2}))
     // let maxmove = Math.max(...content.map(elem => elem.steps));
 
     // let currentPos = new Array(maxmove);
@@ -94,30 +92,57 @@ export function rope(file:string){
 
     const uniquePos = new Set<string>;
     uniquePos.add('0,0');
-    let head:Point = {x:0, y:0};
-    let tail:Point = {x:0, y:0};
+    // let head:Point = {x:0, y:0};
+    // let tail:Point = {x:0, y:0};
+
+    // content.forEach(move=>{
+    //     for (let i = 0; i < move.steps; i++){
+    //         switch(move.dir){
+    //             case 'U':head = up(head); break;
+    //             case 'D':head = down(head); break;
+    //             case 'L':head = left(head); break;
+    //             case 'R':head = right(head); break;
+    //         }
+
+    //         if(distance(tail, head)>=2){
+    //             tail = relativePos(head, tail);
+    //         }
+        
+    //         uniquePos.add(pointToString(tail))
+    //     }
+        
+         
+    // })
+    // console.log(uniquePos)
+    // return uniquePos.size; // part 1 output
+
+    //part 2
+
+    let largerope:Point[] = new Array(10);
+    largerope.fill({x:0, y:0});
+    //largerope[0] will be the head, largerope[9] the tail
+    uniquePos.clear();
 
     content.forEach(move=>{
         for (let i = 0; i < move.steps; i++){
             switch(move.dir){
-                case 'U':head = up(head); break;
-                case 'D':head = down(head); break;
-                case 'L':head = left(head); break;
-                case 'R':head = right(head); break;
+                case 'U':largerope[0] = up(largerope[0]); break;
+                case 'D':largerope[0] = down(largerope[0]); break;
+                case 'L':largerope[0] = left(largerope[0]); break;
+                case 'R':largerope[0] = right(largerope[0]); break;
             }
-
-            if(distance(tail, head)>=2){
-                tail = relativePos(head, tail);
+            for (let j = 1; j < 10; j++) {
+                if(distance(largerope[j-1], largerope[j]) >= 2){
+                    largerope[j] = relativePos(largerope[j], largerope[j-1]);
+                }
             }
-        
-            uniquePos.add(pointToString(tail))
+            //adding cell 9 because it's the tail of the large rope
+            uniquePos.add(pointToString(largerope[9]));
         }
-        
-         
     })
-    console.log(uniquePos)
     return uniquePos.size;
 }
+
 
 // console.log(rope('./test.txt'));
 console.log(rope('./input.txt'));
