@@ -18,6 +18,7 @@ export function cathode(file:string){
     let registerVal = 1;
     let cycle = 1;
 
+    
     // should have filled an array with all the values at every cycle but
     // instead I've done a check every 40 cycles, so if the cycle is skipped
     // there is no way to check the value (just hardcoding)
@@ -62,7 +63,38 @@ export function cathode(file:string){
         strengthSum+= i*signals[i-1].value;
         console.log(signals[i-1])
     }
-    return strengthSum;
+    // return strengthSum; part 1 output
+
+    // part 2
+    type pos = {x:number, y:number};
+    let crt: string = "";
+    cycle = 1;
+    //middle is the center of the sprite
+    // let middle:pos = {x:0, y:1} 
+    
+    // for (let i = 0; i < 6; i++) {
+    //     crt.push([])
+    //     for (let j = 0; j < 40; j++) {
+    //         crt[i].push('.');
+    //     }
+    // }
+    // crt[0][0] = '#'; crt[0][1] = '#'; crt[0][2] = '#'
+
+    for (let i = 0; i < 6; i++) {
+        for (let j = 0; j < 40; j++) {
+            if(signals[cycle-1].value >= j-1 && signals[cycle-1].value <= j+1) {
+                crt += '#';
+            }
+            else{
+                crt += ' ';
+            }
+            cycle++;
+        }
+        crt += "\n";
+    }
+
+
+    return crt;
 }
 
 console.log(cathode('./input.txt'))
