@@ -18,7 +18,6 @@ function monkeyWorry(file:string){
     let monkeys:monkey[] = [];
 
     for (let i = 1; i < monkeysUnparsed.length; i+=7) {
-        let monkey:monkey;
         const monkeyTemp:string[] = monkeysUnparsed.slice(i, i+5).map(strings=>strings.trim());
 
         //worries
@@ -51,14 +50,14 @@ function monkeyWorry(file:string){
         })
     }
     // console.log(monkeys);
-
+    /*
     //rounds
     for (let i = 0; i < 20; i++) {
         console.log("round: ",i+1);
         //monkeys
         monkeys.forEach(monkey => {
             //items
-            monkey.worries.forEach((worry, index) =>{
+            monkey.worries.forEach((worry) =>{
                 let res:number = monkey.multiplier == 'old' ? worry : monkey.multiplier;
                 
                 switch(monkey.sign){
@@ -66,7 +65,7 @@ function monkeyWorry(file:string){
                         res += worry;
                         break;
                     case '*':
-                        res *=worry;
+                        res *= worry;
                         break;
                 }
                 res = Math.floor(res/3);
@@ -90,13 +89,62 @@ function monkeyWorry(file:string){
     monkeys.forEach(monkey=>{
         inspections.push(monkey.nInspections);
     })
+    console.log(Math.max(...inspections))
+    let max = Math.max(...inspections);
+    inspections.splice(inspections.indexOf(max, 1));
+    console.log(Math.max(...inspections))
+    // return max*= Math.max(...inspections); // part 1 output
+    */
+    // part 2 is just not dividing by 3 and going for 10000 rounds
+    // x % a = (x % (a*b * c * ..) ) % a
 
+    let tests = monkeys.reduce((res, monkey)=>{
+        return monkey.test * res;
+    }, 1)
+
+    for (let i = 0; i < 10_000; i++) {
+        console.log("round: ",i+1);
+        //monkeys
+        monkeys.forEach(monkey => {
+            //items
+            monkey.worries.forEach((worry) =>{
+                let res:number = monkey.multiplier == 'old' ? worry : monkey.multiplier;
+                
+                switch(monkey.sign){
+                    case '+':
+                        res += worry;
+                        break;
+                    case '*':
+                        res *= worry;
+                        break;
+                }
+                res = res%tests;
+                // res = Math.floor(res/3);
+                //removing the item from the monkey
+                //giving it to another monkey
+                if(res%monkey.test == 0){
+                    monkeys[monkey.trueM].worries.unshift(res);
+                    // console.log("divisibile ", res)
+                }
+                else{
+                    monkeys[monkey.falseM].worries.unshift(res);
+                    // console.log("non divisibile ", res)
+                }
+                monkey.nInspections++;
+            })
+            monkey.worries = [];
+        });
+    }
+
+    let inspections:number[] = [];
+    monkeys.forEach(monkey=>{
+        inspections.push(monkey.nInspections);
+    })
     let max = Math.max(...inspections);
     inspections.splice(inspections.indexOf(max, 1));
 
     return max*= Math.max(...inspections);
 }
-
 
 // console.log(monkeyWorry('./test.txt'));
 console.log(monkeyWorry('./input.txt'));
